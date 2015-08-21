@@ -16,6 +16,7 @@
 package com.atoito.jeauty;
 
 import java.io.File;
+import java.util.List;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -28,31 +29,45 @@ public class App {
 		if (result.success) {
 			System.exit(0);
 		}
-		System.err.printf("Errors:%n%s%n", result.errors);
+		printErrors(result.errors);
+		app.usage();
 		System.exit(1);
 	}
+	
+	private static void printErrors(List<String> errors) {
+		System.err.printf("Errors:%n");
+		for (String error: errors) {
+			System.err.printf("- %s%n", error);
+		}
+	}
 
+	private JCommander jcommander;
 	private FileProcessor fileProcessor;
 	
 	public RunResult run(String[] args) {
 		CliFlags flags = new CliFlags();
 		try {
-			new JCommander(flags, args);			
+			jcommander = new JCommander(flags, args);
+			jcommander.setProgramName("jeauty");
 		} catch (ParameterException e) {
 			return RunResult.fail(e);
 		}
+		if (flags.help) {
+			usage();
+			return RunResult.successful();
+		}
 		RunOptions options = RunOptions.fromCliFlags(flags);
-		if (flags.parameters.isEmpty()) {
+		if (flags.paths.isEmpty()) {
 			return RunResult.fail("missing input paths");
 		}
 		fileProcessor = new FileProcessor(options);
-		for (String param: flags.parameters) {
+		for (String param: flags.paths) {
 			File f = new File(param);
 			if (!f.exists()) {
 				return RunResult.fail("not found file "+param);
 			}
 		}		
-		for (String param: flags.parameters) {
+		for (String param: flags.paths) {
 			File f = new File(param);
 			RunResult result = fileProcessor.process(f);
 			if (!result.success) {
@@ -60,5 +75,9 @@ public class App {
 			}
 		}
 		return RunResult.successful();
+	}
+	
+	public void usage() {
+		jcommander.usage();
 	}
 }

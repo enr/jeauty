@@ -21,8 +21,9 @@ import com.beust.jcommander.Parameter;
 import com.google.common.collect.Lists;
 
 public class CliFlags {
-    @Parameter
-    public List<String> parameters = Lists.newArrayList();
+
+    @Parameter(description = "The list of paths to check")
+    public List<String> paths = Lists.newArrayList();
 
 //    @Parameter(names = {"-c", "--charset"}, description = "Charset")
 //    public String charset = "utf-8";
@@ -34,5 +35,8 @@ public class CliFlags {
 
     @Parameter(names = {"-w", "--write"}, description = "Overwrite sources with Jeauty's version")
     public boolean write = false;
+
+    @Parameter(names = {"-h", "--help"}, description = "Print this help", help = true)
+    public boolean help;
 
 }
