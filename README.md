@@ -4,7 +4,7 @@ Command line Java code formatter.
 
 [![Build Status](https://api.travis-ci.org/enr/jeauty.png?branch=master)](https://travis-ci.org/enr/jeauty)
 
-**Jeauty is a tool that modifies your files. Use it at your own risk. (In particular, commit or back up changes before you have sub go to town on your data.)**
+**Jeauty is a tool that modifies your files. Use it at your own risk. (In particular, commit or back up changes before usage.)**
 
 There is not yet a distribution.
 
